@@ -1,6 +1,10 @@
 const path = require("path");
 const MiniCss = require("mini-css-extract-plugin");
 module.exports = {
+	mode: "development",
+	devServer: {
+		contentBase: './dist',
+	},
 	module: {
 		rules: [
 			{
