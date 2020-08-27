@@ -12,7 +12,7 @@ const Header = ({ addTodo }) => (
           addTodo(text)
         }
       }}
-      placeholder="What needs to be done?"
+      placeholder="What needs to be done be dooasdf?"
     />
   </header>
 )
