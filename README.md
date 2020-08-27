@@ -1,9 +1,29 @@
-# todo-mvc-react-hooks-experiments
+# New Project
 
-Some experiments with [ReactJS Hooks ](https://reactjs.org/docs/hooks-intro.html) based on [TodoMVC](https://github.com/tastejs/todomvc/).
+> ✨ Bootstrapped with Create Snowpack App (CSA).
 
-- master is a basic implementation using the "useState" hook
-- the [`returning-state-hook`](https://github.com/fdecampredon/todo-mvc-react-hooks-experiments/tree/returning-state-hook) branch demonstrate the usage of a custom hook implementing the [returning state pattern](https://github.com/reactjs/react-future/tree/master/07%20-%20Returning%20State)
-- the [`reactive-state`](https://github.com/fdecampredon/todo-mvc-react-hooks-experiments/tree/reactive-state) branch  demonstrate the usage of combining hooks with [Observable](https://github.com/tc39/proposal-observable).
+## Available Scripts
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### npm start
+
+Runs the app in the development mode.
+Open http://localhost:8080 to view it in the browser.
+
+The page will reload if you make edits.
+You will also see any lint errors in the console.
+
+### npm test
+
+Launches the test runner in the interactive watch mode.
+See the section about running tests for more information.
+
+### npm run build
+
+Builds a static copy of your site to the `build/` folder.
+Your app is ready to be deployed!
+
+**For the best production performance:** Add a build bundler plugin like "@snowpack/plugin-webpack" or "@snowpack/plugin-parcel" to your `snowpack.config.json` config file.
+
+### Q: What about Eject?
+
+No eject needed! Snowpack guarantees zero lock-in, and CSA strives for the same.
