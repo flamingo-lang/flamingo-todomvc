@@ -1,6 +1,6 @@
-import React from "react";
-import { Footer } from "./Footer";
-import { TodoList } from "./TodoList";
+import React from 'react';
+import { Footer } from './Footer';
+import { TodoList } from './TodoList';
 
 import { useDispatch, useQuery } from 'flamingo';
 
@@ -22,13 +22,17 @@ export const MainSection = () => {
             checked={all_complete}
             readOnly
           />
-          <label onClick={() => dispatch("set_alll", {
-            state: all_complete ? "incomplete" : "complete"
-          })} />
+          <label
+            onClick={() =>
+              dispatch('set_alll', {
+                state: all_complete ? 'incomplete' : 'complete',
+              })
+            }
+          />
         </span>
       )}
-      <TodoList/>
-      {Active.length && <Footer/>}
+      <TodoList />
+      {Active.length && <Footer />}
     </section>
   );
 };

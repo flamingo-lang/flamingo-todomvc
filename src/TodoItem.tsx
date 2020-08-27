@@ -14,7 +14,7 @@ export const TodoItem = ({ key }) => {
 
   const destroy = () => dispatch('destroy_todo', { target: key });
 
-  const handleSave = (text) => {
+  const handleSave = text => {
     if (text.length === 0) {
       destroy();
     } else {

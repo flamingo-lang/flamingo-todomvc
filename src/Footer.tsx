@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { FILTER_TITLES } from './TodoFilters';
 import { useDispatch, useQuery } from 'flamingo';
@@ -33,7 +32,10 @@ export const Footer = () => {
         ))}
       </ul>
       {Completed.length && (
-        <button className="clear-completed" onClick={() => dispatch("clear_completed")}>
+        <button
+          className="clear-completed"
+          onClick={() => dispatch('clear_completed')}
+        >
           Clear completed
         </button>
       )}
