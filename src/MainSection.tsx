@@ -1,81 +1,34 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import Footer from "./Footer";
-import TodoList from "./TodoList";
-import { SHOW_ALL, SHOW_COMPLETED, SHOW_ACTIVE } from "./TodoFilters";
+import React from "react";
+import { Footer } from "./Footer";
+import { TodoList } from "./TodoList";
 
-const MainSection = ({
-  todos,
-  deleteTodo,
-  editTodo,
-  toggleTodo,
-  toggleAllTodo,
-  clearCompleted
-}) => {
-  const [visibilityFilter, setFilter] = useState(SHOW_ALL);
+import { useDispatch, useQuery } from 'flamingo';
 
-  const todosCount = todos.length;
-  const completedCount = todos.filter(({ completed }) => completed).length;
-  let visibleTodos;
-  switch (visibilityFilter) {
-    case SHOW_ALL:
-      visibleTodos = todos;
-      break;
-    case SHOW_COMPLETED:
-      visibleTodos = todos.filter(t => t.completed);
-      break;
-    case SHOW_ACTIVE:
-      visibleTodos = todos.filter(t => !t.completed);
-      break;
-    default:
-      throw new Error("Unknown filter: " + visibilityFilter);
-  }
+export const MainSection = () => {
+  const dispatch = useDispatch();
+  const { Active, Completed } = useQuery(`
+  active(Active).
+  completed(Completed).
+  `);
 
+  const all_complete = Active.length === Completed.length;
   return (
     <section className="main">
-      {!!todosCount && (
+      {Active.length && (
         <span>
           <input
             className="toggle-all"
             type="checkbox"
-            checked={completedCount === todosCount}
+            checked={all_complete}
             readOnly
           />
-          <label onClick={toggleAllTodo} />
+          <label onClick={() => dispatch("set_alll", {
+            state: all_complete ? "incomplete" : "complete"
+          })} />
         </span>
       )}
-      <TodoList
-        todos={visibleTodos}
-        deleteTodo={deleteTodo}
-        editTodo={editTodo}
-        toggleTodo={toggleTodo}
-      />
-      {!!todosCount && (
-        <Footer
-          visibilityFilter={visibilityFilter}
-          setFilter={setFilter}
-          completedCount={completedCount}
-          activeCount={todosCount - completedCount}
-          clearCompleted={clearCompleted}
-        />
-      )}
+      <TodoList/>
+      {Active.length && <Footer/>}
     </section>
   );
 };
-
-MainSection.propTypes = {
-  todos: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      completed: PropTypes.bool.isRequired,
-      text: PropTypes.string.isRequired
-    }).isRequired
-  ).isRequired,
-  deleteTodo: PropTypes.func.isRequired,
-  editTodo: PropTypes.func.isRequired,
-  toggleTodo: PropTypes.func.isRequired,
-  toggleAllTodo: PropTypes.func.isRequired,
-  clearCompleted: PropTypes.func.isRequired
-};
-
-export default MainSection;

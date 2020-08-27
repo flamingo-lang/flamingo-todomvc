@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Header from "./Header";
-import MainSection from "./MainSection";
+import { Header } from "./Header";
+import { MainSection } from "./MainSection";
 
 const useTodos = () => {
   const [todos, setTodos] = useState([]);
@@ -68,14 +68,13 @@ const App = () => {
 
   return (
     <div>
-      <Header addTodo={addTodo} />
+      <Header/>
       <MainSection
         todos={todos}
         deleteTodo={deleteTodo}
         editTodo={editTodo}
         toggleTodo={toggleTodo}
         toggleAllTodo={toggleAllTodo}
-        clearCompleted={clearCompleted}
       />
     </div>
   );

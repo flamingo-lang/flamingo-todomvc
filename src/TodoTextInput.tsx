@@ -1,55 +1,45 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, {useState} from "react";
 import classnames from "classnames";
 
-export default class TodoTextInput extends Component {
-  static propTypes = {
-    onSave: PropTypes.func.isRequired,
-    text: PropTypes.string,
-    placeholder: PropTypes.string,
-    editing: PropTypes.bool,
-    newTodo: PropTypes.bool
-  };
+export const TodoTextInput: React.FunctionComponent<{
+  text?: string,
+  editing: boolean,
+  placeholder: string,
+  newTodo: boolean
+  onSave: (s: string) => void
+}> = ({ text, editing, onSave, newTodo, placeholder }) => {
 
-  state = {
-    text: this.props.text || ""
-  };
+  const [textState, setText] = useState(text ?? "");
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     const text = e.target.value.trim();
     if (e.which === 13) {
-      this.props.onSave(text);
-      if (this.props.newTodo) {
-        this.setState({ text: "" });
+      onSave(text);
+      if (newTodo) {
+        setText("");
       }
     }
   };
 
-  handleChange = e => {
-    this.setState({ text: e.target.value });
-  };
-
-  handleBlur = e => {
-    if (!this.props.newTodo) {
-      this.props.onSave(e.target.value);
+  const handleBlur = e => {
+    if (!newTodo) {
+      onSave(e.target.value);
     }
   };
 
-  render() {
-    return (
+  return (
       <input
         className={classnames({
-          edit: this.props.editing,
-          "new-todo": this.props.newTodo
+          edit: editing,
+          "new-todo": newTodo
         })}
         type="text"
-        placeholder={this.props.placeholder}
+        placeholder={placeholder}
         autoFocus={true}
-        value={this.state.text}
-        onBlur={this.handleBlur}
-        onChange={this.handleChange}
-        onKeyDown={this.handleSubmit}
+        value={textState}
+        onBlur={handleBlur}
+        onChange={e => setText(e.target.value)}
+        onKeyDown={handleSubmit}
       />
     );
-  }
 }
