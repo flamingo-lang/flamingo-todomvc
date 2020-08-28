@@ -3,6 +3,9 @@ import classnames from 'classnames';
 import { FILTER_TITLES } from './TodoFilters';
 import { useDispatch, useQuery } from 'flamingo';
 
+// In terms of Flamingo, this component is very
+// similar to the others we've seen: it uses
+// a combination of query and dispatch.
 export const Footer = () => {
   const dispatch = useDispatch();
   const { ActiveFilter, Active, Completed } = useQuery(`

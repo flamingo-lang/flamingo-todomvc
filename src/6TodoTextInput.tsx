@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import classnames from 'classnames';
 
+// This component is used both in the the TodoItem
+// and Header components. It's dumb (doesn't use query
+// or dispatch) so we don't have much to say about it.
 export const TodoTextInput: React.FunctionComponent<{
   text?: string;
   editing?: boolean;
