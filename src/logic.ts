@@ -1,4 +1,4 @@
-const logic = [
+export const logic = [
 // The ALM is interspersed with comments which are
 // excluded to make them more visible (syntax highlighting
 // coming soon!).
