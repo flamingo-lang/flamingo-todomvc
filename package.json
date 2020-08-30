@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "classnames": "^2.2.6",
+    "flamingo-lang": "^0.1.0-alpha3",
     "prettier": "^1.14.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

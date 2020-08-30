@@ -1,9 +1,9 @@
 import React from 'react';
 import { TodoTextInput } from './6TodoTextInput';
-import { useDispatch } from 'flamingo';
+import { useDispatch } from 'flamingo-lang';
 
 export const Header = () => {
-  // To dispatch actions, we need to call 
+  // To dispatch actions, we need to call
   const dispatch = useDispatch();
   return (
     <header className="header">

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useQuery, useDispatch } from 'flamingo';
+import { useQuery, useDispatch } from 'flamingo-lang';
 import classnames from 'classnames';
 import { TodoTextInput } from './6TodoTextInput';
 
@@ -15,7 +15,7 @@ export const TodoItem = ({ key }) => {
   const { Text, Completed } = useQuery(`
     text(${key}) = Text.
     completed(${key}) = Completed.
-  `);
+  `) as {Text: string, Completed: boolean};
 
   // Because the editing state is local and is guaranteed
   // not to affect other components, we can capture it

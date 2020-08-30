@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { FILTER_TITLES } from './TodoFilters';
-import { useDispatch, useQuery } from 'flamingo';
+import { useDispatch, useQuery } from 'flamingo-lang';
 
 // In terms of Flamingo, this component is very
 // similar to the others we've seen: it uses
@@ -12,7 +12,7 @@ export const Footer = () => {
     active_filter = ActiveFilter.
     active(Active).
     completed(Completed).
-  `);
+  `) as {ActiveFilter: string, Active: string[], Completed: string[]};
 
   const itemWord = Active.length === 1 ? 'item' : 'items';
 

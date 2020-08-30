@@ -1,5 +1,5 @@
 import React from 'react';
-import { Provider, createSession } from 'flamingo';
+import { Provider, createSession } from 'flamingo-lang';
 import { Header } from './2Header';
 import { MainSection } from './3MainSection';
 // This file contains our ALM program as a string.
