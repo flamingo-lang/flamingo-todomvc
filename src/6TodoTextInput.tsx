@@ -13,7 +13,7 @@ export const TodoTextInput: React.FunctionComponent<{
 }> = ({ text, editing, onSave, newTodo, placeholder }) => {
   const [textState, setText] = useState(text || '');
 
-  const handleSubmit = e => {
+  const handleSubmit = (e: any) => {
     const text = e.target.value.trim();
     if (e.which === 13) {
       onSave(text);
@@ -23,7 +23,7 @@ export const TodoTextInput: React.FunctionComponent<{
     }
   };
 
-  const handleBlur = e => {
+  const handleBlur = (e: { target: { value: string; }; }) => {
     if (!newTodo) {
       onSave(e.target.value);
     }

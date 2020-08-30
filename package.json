@@ -1,29 +1,42 @@
 {
-  "name": "todo-mvc-react-hooks-experiments",
+  "name": "flamingo-todomvc",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "classnames": "^2.2.6",
-    "flamingo-lang": "^0.1.0-alpha3",
-    "prettier": "^1.14.3",
+    "flamingo-lang": "^0.1.0-alpha5",
+    "rambda": "^5.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-router": "^4.3.1",
-    "todomvc-app-css": "^2.1.2",
-    "todomvc-common": "^1.0.5"
+    "rxjs": "^6.6.2",
+    "rxjs-hooks": "^0.6.2",
+    "todomvc-app-css": "^2.3.0"
+  },
+  "peerDependencies": {
+    "react": ">=16.13.1",
+    "react-dom": ">=16.13.1"
   },
   "scripts": {
-    "start": "snowpack dev",
-    "build": "snowpack build",
-    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
-    "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\""
+    "start": "snowpack dev"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ],
+  "eslintConfig": {
+    "extends": "react-app",
+    "rules": {
+      "no-undef": "off"
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "devDependencies": {
     "@snowpack/app-scripts-react": "^1.10.0",
     "@testing-library/jest-dom": "^5.5.0",
@@ -34,6 +47,6 @@
     "jest": "^26.2.2",
     "prettier": "^2.0.5",
     "snowpack": "^2.9.0",
-    "typescript": "^3.9.7"
+    "typescript": "^4.0.0"
   }
 }

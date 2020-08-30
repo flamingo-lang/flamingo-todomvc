@@ -1,8 +1,8 @@
 import React from 'react';
 import { Footer } from './7Footer';
 import { TodoList } from './4TodoList';
-
-import { useDispatch, useQuery, FlamingoValue } from 'flamingo-lang';
+import Fl from "flamingo-lang";
+import { useDispatch, useQuery } from './flamingo-hooks';
 
 export const MainSection = () => {
   const dispatch = useDispatch();
@@ -10,7 +10,7 @@ export const MainSection = () => {
   const { Active, Completed } = useQuery(`
     active(Active).
     completed(Completed).
-  `) as {Active: FlamingoValue[], Completed: FlamingoValue[]};
+  `) as { Active: Fl.FlamingoValue[]; Completed: Fl.FlamingoValue[] };
 
   // Note whitespace isn't sensitive in the query.
   // the `active(Active).` clause will find all the todos

@@ -1,5 +1,10 @@
 import React from 'react';
-import { Provider, createSession } from 'flamingo-lang';
+import Fl from "flamingo-lang";
+// flamingo-hooks provides a React Hooks
+// interface into Flamingo, which is the default.
+// Eventually, flamingo-hooks will be a separate
+// lib.
+import { Provider } from './flamingo-hooks';
 import { Header } from './2Header';
 import { MainSection } from './3MainSection';
 // This file contains our ALM program as a string.
@@ -13,10 +18,10 @@ import { logic } from './0logic';
 export const App = () => (
   // We load our logic via createSession and
   // provide it to the rest of our app via context.
-  <Provider session={createSession(logic)}>
+  <Provider logic={logic}>
     <div>
       <Header />
-      <MainSection />
+      {/* <MainSection /> */}
     </div>
   </Provider>
 );

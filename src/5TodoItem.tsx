@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { useQuery, useDispatch } from 'flamingo-lang';
+import React, { useState, FunctionComponent } from 'react';
+import { useQuery, useDispatch } from './flamingo-hooks';
 import classnames from 'classnames';
 import { TodoTextInput } from './6TodoTextInput';
 
-export const TodoItem = ({ key }) => {
+export const TodoItem: FunctionComponent<{key: any}> = ({ key }) => {
   const dispatch = useDispatch();
   // Note something special here: our query
   // is parameterized by the key passed down
@@ -35,7 +35,7 @@ export const TodoItem = ({ key }) => {
 
   // Here, for simplicity, we'll keep TodoTextInput a dumb component
   // and pass in its save callback as a closure.
-  const handleSave = text => {
+  const handleSave = (text: string) => {
     if (text.length === 0) {
       destroy();
     } else {

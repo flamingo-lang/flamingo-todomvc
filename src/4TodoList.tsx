@@ -1,6 +1,6 @@
 import React from 'react';
 import { TodoItem } from './5TodoItem';
-import { useQuery } from 'flamingo-lang';
+import { useQuery } from './flamingo-hooks';
 
 export const TodoList = () => {
   const { Todo } = useQuery(`visible(Todo).`) as { Todo: string[] };

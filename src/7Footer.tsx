@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { FILTER_TITLES } from './TodoFilters';
-import { useDispatch, useQuery } from 'flamingo-lang';
+import { useDispatch, useQuery } from './flamingo-hooks';
 
 // In terms of Flamingo, this component is very
 // similar to the others we've seen: it uses
@@ -29,7 +29,7 @@ export const Footer = () => {
               style={{ cursor: 'pointer' }}
               onClick={() => dispatch('set_active_filter', { filter })}
             >
-              {FILTER_TITLES[filter]}
+              {FILTER_TITLES[filter as "all" | "completed" | "active"]}
             </a>
           </li>
         ))}

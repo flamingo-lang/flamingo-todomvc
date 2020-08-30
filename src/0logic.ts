@@ -186,13 +186,14 @@ axioms
     // all completed todos are destroyed.
     `
     occurs(A) causes destroyed(Todo) if
-        instance(A, clear_completed),
+        instance(A, clear_completed),`,
         // Notice that Todo is only used
         // once in the body. That means
         // it will bind to _all_ possible
         // values in that "slot", which, in 
         // this case, means all the completed
         // todos.
+        `
         completed(Todo).
     `,
     // Natural language:
