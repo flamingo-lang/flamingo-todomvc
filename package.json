@@ -10,7 +10,7 @@
     "react-dom": "^16.13.1",
     "rxjs": "^6.6.2",
     "rxjs-hooks": "^0.6.2",
-    "todomvc-app-css": "^2.3.0",
+    "todomvc-app-css": "2.1.2",
     "wasm-clingo": "^0.3.0"
   },
   "peerDependencies": {
@@ -18,7 +18,7 @@
     "react-dom": ">=16.13.1"
   },
   "scripts": {
-    "start": "snowpack dev --polyfill-node"
+    "start": "snowpack dev --polyfill-node --reload"
   },
   "eslintConfig": {
     "extends": "react-app",
