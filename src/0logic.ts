@@ -1,10 +1,10 @@
 export const logic = [
-// The ALM is interspersed with comments which are
-// excluded to make them more visible (syntax highlighting
-// coming soon!).
-`
-module todo
-sorts`,
+    // The ALM is interspersed with comments which are
+    // excluded to make them more visible (syntax highlighting
+    // coming soon!).
+    `
+    module todomvc
+    sorts`,
     // Unlike apples and oranges, todo items are _virtual_ - users
     // can make them out of nothing. To represent this, we'll use integers.
     // (With specialization, our type system will prevent us from using
@@ -12,9 +12,10 @@ sorts`,
     // Note that we don't "creating" new todo's - like the integers,
     // they already exist (sort of - the semantics here are fuzzy,
     // and clarifying best practices for Flamingo in situations like
-    // this is a big goal on the roadmap).
+    // this is a big goal on the roadmap). Also note Flamingo only
+    // supports finite domains (with infinite domains also on the roadmap).
     `
-    todos :: integers
+    todos :: 1..10
     todo_state :: { complete, incomplete }
     `,
     // There are three filter states: All, Active, and Completed.
@@ -27,7 +28,7 @@ sorts`,
     `
     new_todo :: actions
         attributes
-            text : string
+            new_text : strings
     `,
     // Several of our actions will target some particular
     // todo, so we can create an action that captures this
@@ -41,7 +42,7 @@ sorts`,
     destroy_todo :: todo_action
     edit_todo :: todo_action
         attributes
-            text : string
+            text : strings
     `,
     // There's a button that sets all the todos to completed
     // if any are incomplete and sets them all to incomplete
@@ -77,30 +78,30 @@ statics
 fluents
     basic 
     `,
-        // Since we're using integers to represent todos,
-        // we need to know what the next todo is when
-        // activating new ones. (I.e, if todos 1, 2, and 3
-        // were created already, we want next_todo to equal 4).
-        `
+    // Since we're using integers to represent todos,
+    // we need to know what the next todo is when
+    // activating new ones. (I.e, if todos 1, 2, and 3
+    // were created already, we want next_todo to equal 4).
+    `
         next_todo : todos
         `,
-        
-        // Since we can't create or destroy integers, instead
-        // we'll mark them with a special function to indicate
-        // they've been destroyed.
-        `
+
+    // Since we can't create or destroy integers, instead
+    // we'll mark them with a special function to indicate
+    // they've been destroyed.
+    `
         destroyed : todos -> booleans
         `,
-        
-        // This function gives the actual text of a todo.
-        // Remember, it changes as users edit them.
-        `
+
+    // This function gives the actual text of a todo.
+    // Remember, it changes as users edit them.
+    `
         text : todos -> strings
         `,
 
-        // Active is in the inverse of destroyed, and
-        // indicates which todos exist in the list.
-        `
+    // Active is in the inverse of destroyed, and
+    // indicates which todos exist in the list.
+    `
         active : todos -> booleans
 
         completed : todos -> booleans
@@ -108,10 +109,10 @@ fluents
         active_filter : filters
     defined
         `,
-        // Depending on the active filter, some todos
-        // can be hidden. Because this is a derived
-        // property, we use a defined fluent.
-        `
+    // Depending on the active filter, some todos
+    // can be hidden. Because this is a derived
+    // property, we use a defined fluent.
+    `
         visible : todos -> booleans
 axioms
 `,
@@ -120,7 +121,7 @@ axioms
     complement(true) = false.
     complement(false) = true.
     `,
-    
+
     // Natural Language:
     // When the new_todo action occurs,
     // given the next todo is Todo,
@@ -133,10 +134,11 @@ axioms
     occurs(A) causes
         text(Todo) = Text,
         completed(Todo) = false,
+        active(Todo),
         next_todo = Todo + 1
     if
         instance(A, new_todo),
-        text(A) = Text,
+        new_text(A) = Text,
         next_todo = Todo.
     `,
     // Natural language:
@@ -187,13 +189,13 @@ axioms
     `
     occurs(A) causes destroyed(Todo) if
         instance(A, clear_completed),`,
-        // Notice that Todo is only used
-        // once in the body. That means
-        // it will bind to _all_ possible
-        // values in that "slot", which, in 
-        // this case, means all the completed
-        // todos.
-        `
+    // Notice that Todo is only used
+    // once in the body. That means
+    // it will bind to _all_ possible
+    // values in that "slot", which, in 
+    // this case, means all the completed
+    // todos.
+    `
         completed(Todo).
     `,
     // Natural language:
@@ -208,22 +210,22 @@ axioms
     // Just like in clear_completed, Todo here
     // will bind to all todos.
     `
-    visible(Todo) if active_filter = all.
+    visible(Todo) if active(Todo), active_filter = all.
     `,
     // Here, since we bind Todo with "completed(Todo)", it's
     // narrowed to just the completed todos.
     `
-    visible(Todo) if completed(Todo), active_filter = completed.
+    visible(Todo) if active(Todo), completed(Todo), active_filter = completed.
     `,
     // And vice versa here.
     `
-    visible(Todo) if -completed(Todo), active_filter = active.
+    visible(Todo) if active(Todo), -completed(Todo), active_filter = active.
     `,
 
-// This is a new section that didn't appear in the fruit_and_basket
-// system. In practical systems, it's often useful to give fluents
-// an initial "starting value". We do so here by writing them as facts.
-`
+    // This is a new section that didn't appear in the fruit_and_basket
+    // system. In practical systems, it's often useful to give fluents
+    // an initial "starting value". We do so here by writing them as facts.
+    `
 initially
     next_todo = 1.
     active_filter = all.
