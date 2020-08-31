@@ -2399,6 +2399,13 @@ clean-stack@^2.0.0:
   resolved "https://registry.yarnpkg.com/clean-stack/-/clean-stack-2.2.0.tgz#ee8472dbb129e727b31e8a10a427dee9dfe4008b"
   integrity sha512-4diC9HaTE+KRAMWhDhrGOECgWZxoevMc5TlkObMqNSsVU62PYzXZ/SMTjzyGAFF1YusgxGcSWTEXBhp0CPwQ1A==
 
+clingo-wasm@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/clingo-wasm/-/clingo-wasm-0.0.1.tgz#944b47c8fc618833922ccc2e90da94ffbe61906d"
+  integrity sha512-1+bW8IGcz3tUnqxjonBuCoKHC9qyUDdmDMxcAISIawYk7qlRkBFLJ1Iwdv1YSRShQlU9qN3N3D3rbLLriyca5Q==
+  dependencies:
+    typescript "^3.6.2"
+
 cliui@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/cliui/-/cliui-6.0.0.tgz#511d702c0c4e41ca156d7d0e96021f23e13225b1"
@@ -5933,6 +5940,11 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
+typescript@^3.6.2:
+  version "3.9.7"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.7.tgz#98d600a5ebdc38f40cb277522f12dc800e9e25fa"
+  integrity sha512-BLbiRkiBzAwsjut4x/dsibSTB6yWpwT5qWmC2OfuCg3GgVQCSgMs4vEctYPhsaGtd0AeuuHMkjZ2h2WG8MSzRw==
+
 typescript@^4.0.0:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.0.2.tgz#7ea7c88777c723c681e33bf7988be5d008d05ac2"
@@ -6078,6 +6090,11 @@ walker@^1.0.7, walker@~1.0.5:
   integrity sha1-L3+bj9ENZ3JisYqITijRlhjgKPs=
   dependencies:
     makeerror "1.0.x"
+
+wasm-clingo@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/wasm-clingo/-/wasm-clingo-0.3.0.tgz#964049c5692f37e09e98d3af66b9f262900853ed"
+  integrity sha512-/m2QmGlK2I1/TGbxakJA312LH9p5/9MIlzPxQh3RzYU/L3LiYse3Ur/iWLzDPm1LH4gMaF20t2aJKAAbFIt9JA==
 
 webidl-conversions@^5.0.0:
   version "5.0.0"

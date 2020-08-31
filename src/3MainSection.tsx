@@ -1,35 +1,39 @@
 import React from 'react';
 import { Footer } from './7Footer';
 import { TodoList } from './4TodoList';
-import Fl from "flamingo-lang";
+import type Fl from 'flamingo-lang';
 import { useDispatch, useQuery } from './flamingo-hooks';
 
 export const MainSection = () => {
   const dispatch = useDispatch();
   // Here's out first query:
-  const { Active, Completed } = useQuery(`
-    active(Active).
-    completed(Completed).
-  `) as { Active: Fl.FlamingoValue[]; Completed: Fl.FlamingoValue[] };
+  const { Active, Completed } = useQuery(
+    `active(Active),
+     completed(Completed).`,
+    // Note whitespace isn't sensitive in the query.
+    // the `active(Active).` clause will find all the todos
+    // that are active. The variable name, `Active`, will be
+    // used as a key in the object returned by `useQuery`, and
+    // its value will be an array of all active todos.
+    // Same for completed.
 
-  // Note whitespace isn't sensitive in the query.
-  // the `active(Active).` clause will find all the todos
-  // that are active. The variable name, `Active`, will be
-  // used as a key in the object returned by `useQuery`, and
-  // its value will be an array of all active todos.
-  // Same for completed.
+    // Because queries are async, we need to provide a default
+    // value. This will likely change in v0.2.0. Aysnc is no
+    // fun 😞
+    { Active: [], Completed: [] },
+  ) as { Active: Fl.FlamingoValue[]; Completed: Fl.FlamingoValue[] };
 
   // Here we add calculate whether all the active todos
   // are in fact complete. It's a best practice to keep
   // this logic inside the ALM program itself; however,
   // in this particular case, it involves counting, and
   // that feature hasn't been implemented in Flamingo yet.
-  const all_complete = Active.length === Completed.length;
+  const all_complete = Active?.length === Completed?.length;
   return (
     <section className="main">
       {/*Same thing here: - this logic should be in the ALM
       program, and will be when we get counting.*/}
-      {Active.length && (
+      {Active?.length && (
         <span>
           <input
             className="toggle-all"
@@ -47,7 +51,7 @@ export const MainSection = () => {
         </span>
       )}
       <TodoList />
-      {Active.length && <Footer />}
+      {Active?.length && <Footer />}
     </section>
   );
 };

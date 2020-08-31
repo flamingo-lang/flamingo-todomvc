@@ -9,13 +9,13 @@ export const TodoItem: FunctionComponent<{key: any}> = ({ key }) => {
   // is parameterized by the key passed down
   // as a prop. This is a powerful capability
   // that makes queries very well suited for
-  // React. You can move this component anywhere
+  // React apps. You can move this component anywhere
   // in the hierarchy, and as long as you pass in
   // a key, it will fetch its own data correctly.
   const { Text, Completed } = useQuery(`
     text(${key}) = Text.
     completed(${key}) = Completed.
-  `) as {Text: string, Completed: boolean};
+  `, { Text: [], Completed: []}) as {Text: string, Completed: boolean};
 
   // Because the editing state is local and is guaranteed
   // not to affect other components, we can capture it

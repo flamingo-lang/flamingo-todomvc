@@ -13,14 +13,15 @@ import { MainSection } from './3MainSection';
 // sorts of new stuff (better performance, type safety,
 // better DevUX).
 import { logic } from './0logic';
-
+import "./clingo/clingo";
 
 export const App = () => (
   // We load our logic via createSession and
   // provide it to the rest of our app via context.
   <Provider logic={logic}>
     <div>
-      <Header />
+      Hello world!
+      {/* <Header /> */}
       {/* <MainSection /> */}
     </div>
   </Provider>

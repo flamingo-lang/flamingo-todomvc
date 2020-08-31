@@ -1,48 +1,64 @@
-import React, { createContext, FunctionComponent, useContext, useEffect } from "react";
-import { Subject } from "rxjs";
-import { mergeMap } from "rxjs/operators";
-import { useObservable } from "rxjs-hooks";
-import Fl from "flamingo-lang";
+import React, { FunctionComponent, useEffect, useMemo } from 'react';
+import { Observable, Subject } from 'rxjs';
+import { mergeMap, startWith } from 'rxjs/operators';
+import { useObservable } from 'rxjs-hooks';
+import Fl from 'flamingo-lang';
 
-let session: Fl.FlamingoSession; 
+let p: Promise<void>;
+let res: () => void;
 
-export const Provider: FunctionComponent<{ logic: string}> = ({
+export const Provider: FunctionComponent<{ logic: string }> = ({
   logic,
   children,
 }) => {
+  p = new Promise((r) => {
+    res = r;
+  });
+
   useEffect(() => {
-    session = Fl.createSession(logic);
+    Fl.createSession(logic);
+    (async () => {
+      await Fl.dispatch('set_active_filter', { filter: 'all' });
+      console.log(await Fl.runQuery('active_filter = Active.'));
+      res();
+    })();
   }, []);
-  return (
-    <>
-      {children}
-    </>
-  );
+  return <>{children}</>;
 };
 
 const actionSubject = new Subject();
 
-export const useQuery = (query: string): Fl.FlamingoQueryResult | null => {
-  console.log("hello query");
-  console.log(session);
-  const obs = actionSubject.pipe(mergeMap(() => Fl.runQuery(session, query).then(x => {
-    console.log(x);
-    return x;
-  })));
-  return useObservable(() => obs);
+const queryMap = new Map<string, Observable<Fl.FlamingoQueryResult>>();
+export const useQuery = (
+  query: string,
+  defaultValue: Fl.FlamingoQueryResult,
+): Fl.FlamingoQueryResult | null => {
+  if (!queryMap.has(query)) {
+    queryMap.set(query, actionSubject.pipe(
+      startWith(defaultValue),
+      mergeMap(async () => {
+        await p;
+        return Fl.runQuery(query);
+
+      }),
+    ));
+    queryMap.get(query)?.subscribe((x) => {
+      console.log("Obs", query, x);
+     });
+  }
+  const obs = queryMap.get(query);
+  return useObservable(() => obs!, defaultValue);
 };
 
 export const useDispatch = () => {
-  console.log("hello dispatch");
-  console.log(session);
-  // return (...x: any): any => session 
-  return (action: string, attributes?: Record<string, Fl.FlamingoValue>) =>
-    Fl.dispatch(session, action, attributes ?? {})//.then(() => actionSubject.next())
-      .then(() => console.log("done with dispatch")).then(() => {
-        console.log(session);
-        Fl.runQuery(session, "active_filter = Active.").then(x => {
-          console.log(x);
-          return x;
-        });
-      })
+  return (action: string, attributes?: Record<string, Fl.FlamingoValue>) => {
+    (async () => {
+      await p;
+      await Fl.dispatch(action, attributes ?? {});
+      console.log('done with dispatch');
+      actionSubject.next();
+      const results = Fl.runQuery('active_filter = Active.');
+      console.log('ActiveFilter from dispatch', results);
+    })();
+  };
 };

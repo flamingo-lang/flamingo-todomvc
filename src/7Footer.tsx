@@ -8,11 +8,16 @@ import { useDispatch, useQuery } from './flamingo-hooks';
 // a combination of query and dispatch.
 export const Footer = () => {
   const dispatch = useDispatch();
-  const { ActiveFilter, Active, Completed } = useQuery(`
-    active_filter = ActiveFilter.
+  const { ActiveFilter, Active, Completed } = useQuery(
+    `active_filter = ActiveFilter.
     active(Active).
-    completed(Completed).
-  `) as {ActiveFilter: string, Active: string[], Completed: string[]};
+    completed(Completed).`,
+    { ActiveFilter: 'all', Active: [], Completed: [] },
+  ) as {
+    ActiveFilter: string;
+    Active: string[];
+    Completed: string[];
+  };
 
   const itemWord = Active.length === 1 ? 'item' : 'items';
 
@@ -22,14 +27,14 @@ export const Footer = () => {
         <strong>{Active.length}</strong> {itemWord} left
       </span>
       <ul className="filters">
-        {Object.keys(FILTER_TITLES).map(filter => (
+        {Object.keys(FILTER_TITLES).map((filter) => (
           <li key={filter}>
             <a
               className={classnames({ selected: filter === ActiveFilter })}
               style={{ cursor: 'pointer' }}
               onClick={() => dispatch('set_active_filter', { filter })}
             >
-              {FILTER_TITLES[filter as "all" | "completed" | "active"]}
+              {FILTER_TITLES[filter as 'all' | 'completed' | 'active']}
             </a>
           </li>
         ))}
