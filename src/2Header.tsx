@@ -9,9 +9,9 @@ export const Header = () => {
     <header className="header">
       <h1>todos</h1>
       <TodoTextInput
-        onSave={text => {
+        onSave={new_text => {
           // This guards against submitting empty todos.
-          if (text.length !== 0) {
+          if (new_text.length !== 0) {
             // Our dispatch function takes two args:
             // - The first is the name of an action
             //    exactly as it appears in our ALM program.
@@ -20,13 +20,15 @@ export const Header = () => {
             // Strings will be converted to ALM strings,
             // numbers to ALM integers, and booleans
             // to ALM booleans.
-            dispatch('new_todo', { text });
+            dispatch('new_todo', { new_text });
             // Calling this function will trigger Flamingo
             // to compute a new state, which will push updates
             // to the rest of the components that have queries
             // with this session.
           }
+
         }}
+        newTodo={true}
         placeholder="What needs to be done?"
       />
     </header>

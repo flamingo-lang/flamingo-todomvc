@@ -4,12 +4,12 @@ import { useQuery } from './flamingo-hooks';
 
 // TodoList uses querying just like MainSection.
 export const TodoList = () => {
-  const { Todo } = useQuery(`visible(Todo).`, {Todo: []}) as { Todo: string[] };
-  console.log(Todo);
+  const visibleTodos = (useQuery("visible(Todo).") as { Todo: number }[]);
+  
   return (
     <ul className="todo-list">
-      {Todo?.map(todo => (
-        <TodoItem key={todo} />
+      {visibleTodos.map(({Todo}) => (
+        <TodoItem todoID={Todo} key={Todo}/>
       ))}
     </ul>
   );

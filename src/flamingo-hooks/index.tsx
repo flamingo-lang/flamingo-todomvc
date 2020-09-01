@@ -1,64 +1,111 @@
-import React, { FunctionComponent, useEffect, useMemo } from 'react';
+import React, { FunctionComponent, useContext, createContext } from 'react';
 import { Observable, Subject } from 'rxjs';
-import { mergeMap, startWith } from 'rxjs/operators';
+import { map, mergeMap, mergeMapTo } from 'rxjs/operators';
 import { useObservable } from 'rxjs-hooks';
 import Fl from 'flamingo-lang';
+import { run } from './clingo';
 
-let p: Promise<void>;
-let res: () => void;
+const Session = createContext<{
+  runQuery: ReturnType<typeof Fl.makeSession>;
+  history: Fl.FlamingoAction[];
+}>((null as unknown) as any);
 
 export const Provider: FunctionComponent<{ logic: string }> = ({
   logic,
   children,
 }) => {
-  p = new Promise((r) => {
-    res = r;
-  });
-
-  useEffect(() => {
-    Fl.createSession(logic);
-    (async () => {
-      await Fl.dispatch('set_active_filter', { filter: 'all' });
-      console.log(await Fl.runQuery('active_filter = Active.'));
-      res();
-    })();
-  }, []);
-  return <>{children}</>;
+  return (
+    <Session.Provider
+      value={{
+        runQuery: Fl.makeSession(run, logic),
+        history: [
+          ['new_todo', { new_text: '"Learn logic programming"' }],
+          ['toggle_todo', {target: 1}],
+          ['new_todo', { new_text: '"Build sweet, rock-solid apps"' }],
+          ["set_active_filter", {filter: "all"}],
+          ["set_active_filter", {filter: "completed"}],
+        ],
+      }}
+    >
+      {children}
+    </Session.Provider>
+  );
 };
 
 const actionSubject = new Subject();
 
-const queryMap = new Map<string, Observable<Fl.FlamingoQueryResult>>();
+let queryToAns: Map<string, Fl.FlamingoQueryResult>;
+
+const queryToAnsObs = new Map<string, Observable<Fl.FlamingoQueryResult>>();
+
 export const useQuery = (
   query: string,
-  defaultValue: Fl.FlamingoQueryResult,
-): Fl.FlamingoQueryResult | null => {
-  if (!queryMap.has(query)) {
-    queryMap.set(query, actionSubject.pipe(
-      startWith(defaultValue),
-      mergeMap(async () => {
-        await p;
-        return Fl.runQuery(query);
+): Fl.FlamingoQueryResult | null | undefined => {
+  if (!queryToAnsObs.has(query)) {
+    queryToAnsObs.set(
+      query,
+      actionSubject.pipe(map(() => {
+        const res = queryToAns.get(query) ?? []
+        console.log("Piping Observable to ", query, res);
+        return res;
+      })),
+    );
 
-      }),
-    ));
-    queryMap.get(query)?.subscribe((x) => {
-      console.log("Obs", query, x);
-     });
+    const { runQuery, history } = useContext(Session);
+    queriesChanged = true;
+    doRunQuery(runQuery, history);
   }
-  const obs = queryMap.get(query);
-  return useObservable(() => obs!, defaultValue);
+
+  const obs = queryToAnsObs.get(query);
+  return useObservable(() => obs!, []);
+};
+
+let historyChanged = true;
+let queriesChanged = true;
+
+const doRunQuery = async (
+  runQuery: ReturnType<typeof Fl.makeSession>,
+  history: Fl.FlamingoAction[],
+) => {
+  if (!historyChanged && !queriesChanged) {
+    return;
+  }
+
+  const userQueries = Array.from(queryToAnsObs.keys()).map((x) =>
+    x.replace('\n', ''),
+  );
+  const queries = [...userQueries].map((x) => x.replace('\n', ''));
+  const results = await runQuery(queries, history as any);
+  console.log('!!! results', results);
+  queryToAns = results;
+  console.log("Calling next");
+  actionSubject.next();
+  historyChanged = false;
+  queriesChanged = false;
 };
 
 export const useDispatch = () => {
+  const { runQuery, history } = useContext(Session);
   return (action: string, attributes?: Record<string, Fl.FlamingoValue>) => {
     (async () => {
-      await p;
-      await Fl.dispatch(action, attributes ?? {});
-      console.log('done with dispatch');
-      actionSubject.next();
-      const results = Fl.runQuery('active_filter = Active.');
-      console.log('ActiveFilter from dispatch', results);
+      const attrs = attributes ?? {};
+      const conv_attributes = Object.keys(attrs).reduce((prev, curr) => {
+        const v = attrs[curr];
+        (prev[curr] = typeof v === 'string' && v.includes(" ") ? `"${v}"` : v.toString()),
+          attributes ?? {};
+        return prev;
+      }, {} as Record<string, Fl.FlamingoValue>);
+
+      const next: [string, Record<string, Fl.FlamingoValue>] = [
+        action,
+        conv_attributes ?? {},
+      ];
+
+      history.push(next);
+      console.log("!!! Dispatching ", next);
+      historyChanged = true;
+      doRunQuery(runQuery, history);
+
     })();
   };
 };

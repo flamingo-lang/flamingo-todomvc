@@ -1,5 +1,4 @@
 import React from 'react';
-import Fl from "flamingo-lang";
 // flamingo-hooks provides a React Hooks
 // interface into Flamingo, which is the default.
 // Eventually, flamingo-hooks will be a separate
@@ -13,16 +12,14 @@ import { MainSection } from './3MainSection';
 // sorts of new stuff (better performance, type safety,
 // better DevUX).
 import { logic } from './0logic';
-import "./clingo/clingo";
 
 export const App = () => (
   // We load our logic via createSession and
   // provide it to the rest of our app via context.
   <Provider logic={logic}>
     <div>
-      Hello world!
-      {/* <Header /> */}
-      {/* <MainSection /> */}
+      <Header />
+      <MainSection />
     </div>
   </Provider>
 );

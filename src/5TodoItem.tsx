@@ -3,7 +3,7 @@ import { useQuery, useDispatch } from './flamingo-hooks';
 import classnames from 'classnames';
 import { TodoTextInput } from './6TodoTextInput';
 
-export const TodoItem: FunctionComponent<{key: any}> = ({ key }) => {
+export const TodoItem: FunctionComponent<{todoID: any}> = ({ todoID }) => {
   const dispatch = useDispatch();
   // Note something special here: our query
   // is parameterized by the key passed down
@@ -12,10 +12,19 @@ export const TodoItem: FunctionComponent<{key: any}> = ({ key }) => {
   // React apps. You can move this component anywhere
   // in the hierarchy, and as long as you pass in
   // a key, it will fetch its own data correctly.
-  const { Text, Completed } = useQuery(`
-    text(${key}) = Text.
-    completed(${key}) = Completed.
-  `, { Text: [], Completed: []}) as {Text: string, Completed: boolean};
+  const textResult = (useQuery(
+    `text(${todoID}) = Text.`
+  ) as { Text: string }[])
+
+  const completedResult = (useQuery(
+    `completed(${todoID}) = Completed.`
+  ) as { Completed: boolean }[]);
+
+  // Note that the results might be empty, so we have to be careful
+  // about how we access them.
+  const text = textResult.length ? textResult[0].Text : null;
+  const completed = completedResult.length ? completedResult[0].Completed
+    : false;
 
   // Because the editing state is local and is guaranteed
   // not to affect other components, we can capture it
@@ -31,7 +40,7 @@ export const TodoItem: FunctionComponent<{key: any}> = ({ key }) => {
   // Otherwise, it's _not_ ok - use ALM or Redux or whatever.
   const [editing, setEditing] = useState(false);
 
-  const destroy = () => dispatch('destroy_todo', { target: key });
+  const destroy = () => dispatch('destroy_todo', { target: todoID });
 
   // Here, for simplicity, we'll keep TodoTextInput a dumb component
   // and pass in its save callback as a closure.
@@ -39,14 +48,14 @@ export const TodoItem: FunctionComponent<{key: any}> = ({ key }) => {
     if (text.length === 0) {
       destroy();
     } else {
-      dispatch('edit_todo', { target: key, text });
+      dispatch('edit_todo', { target: todoID, text });
     }
     setEditing(false);
   };
 
   const element = editing ? (
     <TodoTextInput
-      text={Text}
+      text={text}
       editing={editing}
       onSave={text => handleSave(text)}
     />
@@ -55,10 +64,10 @@ export const TodoItem: FunctionComponent<{key: any}> = ({ key }) => {
       <input
         className="toggle"
         type="checkbox"
-        checked={Completed}
-        onChange={() => dispatch('toggle_todo', { target: key })}
+        checked={completed}
+        onChange={() => dispatch('toggle_todo', { target: todoID })}
       />
-      <label onDoubleClick={() => setEditing(true)}>{Text}</label>
+      <label onDoubleClick={() => setEditing(true)}>{text}</label>
       <button className="destroy" onClick={destroy} />
     </div>
   );
@@ -67,7 +76,7 @@ export const TodoItem: FunctionComponent<{key: any}> = ({ key }) => {
     <li
       className={classnames({
         editing,
-        completed: Completed,
+        completed: completed,
       })}
     >
       {element}
