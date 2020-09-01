@@ -9,8 +9,8 @@ import { MainSection } from './3MainSection';
 // This file contains our ALM program as a string.
 // In the future, we'll support compiling ALM
 // programs directly to Javascript, which open
-// sorts of new stuff (better performance, type safety,
-// better DevUX).
+// sorts of new stuff (dramatically better performance,
+// type safety, better DevUX, etc).
 import { logic } from './0logic';
 
 export const App = () => (
