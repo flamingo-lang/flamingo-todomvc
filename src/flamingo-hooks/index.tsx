@@ -19,11 +19,10 @@ export const Provider: FunctionComponent<{ logic: string }> = ({
       value={{
         runQuery: Fl.makeSession(run, logic),
         history: [
-          ['new_todo', { new_text: '"Learn logic programming"' }],
+          ['new_todo', { new_text: '"Learn logic programming 🤖"' }],
           ['toggle_todo', {target: 1}],
-          ['new_todo', { new_text: '"Build sweet, rock-solid apps"' }],
-          ["set_active_filter", {filter: "all"}],
-          ["set_active_filter", {filter: "completed"}],
+          ['new_todo', { new_text: '"Build sweet apps 🚀"' }],
+          ['new_todo', { new_text: '"Verify them with Flamingo ❤️"' }],
         ],
       }}
     >
