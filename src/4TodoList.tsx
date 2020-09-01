@@ -14,7 +14,6 @@ export const TodoList = () => {
     Todo: number,
     Text: string,
   }[]);
-  console.log(visible);
 
   return (
     <ul className="todo-list">

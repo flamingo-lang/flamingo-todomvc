@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useContext, createContext } from 'react';
 import { Observable, Subject } from 'rxjs';
-import { map, mergeMap, mergeMapTo } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { useObservable } from 'rxjs-hooks';
 import Fl from 'flamingo-lang';
 import { run } from './clingo';
@@ -75,9 +75,7 @@ const doRunQuery = async (
   );
   const queries = [...userQueries].map((x) => x.replace('\n', ''));
   const results = await runQuery(queries, history as any);
-  console.log('!!! results', results);
   queryToAns = results;
-  console.log("Calling next");
   actionSubject.next();
   historyChanged = false;
   queriesChanged = false;
@@ -101,10 +99,8 @@ export const useDispatch = () => {
       ];
 
       history.push(next);
-      console.log("!!! Dispatching ", next);
       historyChanged = true;
       doRunQuery(runQuery, history);
-
     })();
   };
 };

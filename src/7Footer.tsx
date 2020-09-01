@@ -12,7 +12,6 @@ export const Footer = () => {
     // both complete AND active.
     "completed(Todo), active(Todo)."
   ) as { Completed: boolean }[]);
-  console.log(completed);
   const active = (useQuery(
     "active(Active)."
   ) as { Active: boolean }[]);
@@ -36,7 +35,6 @@ export const Footer = () => {
               className={classnames({ selected: filter === activeFilter })}
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                console.log("!!! Setting filter", filter);
                 dispatch('set_active_filter', { filter })
               }}
             >
