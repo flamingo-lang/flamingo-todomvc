@@ -10,7 +10,7 @@ export const Footer = () => {
   const completed = (useQuery(
     // Here we're matching on todos that are 
     // both complete AND active.
-    "completed(Todo), visible(Todo)."
+    "completed(Todo), active(Todo)."
   ) as { Completed: boolean }[]);
   console.log(completed);
   const active = (useQuery(

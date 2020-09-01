@@ -1,31 +1,15 @@
 import React, { useState, FunctionComponent } from 'react';
-import { useQuery, useDispatch } from './flamingo-hooks';
+import { useDispatch } from './flamingo-hooks';
 import classnames from 'classnames';
 import { TodoTextInput } from './6TodoTextInput';
 
-export const TodoItem: FunctionComponent<{todoID: any}> = ({ todoID }) => {
+export const TodoItem: FunctionComponent<{
+  todoID: any,
+  text: string,
+  completed: boolean
+}> = ({ todoID, completed, text }) => {
   const dispatch = useDispatch();
-  // Note something special here: our query
-  // is parameterized by the key passed down
-  // as a prop. This is a powerful capability
-  // that makes queries very well suited for
-  // React apps. You can move this component anywhere
-  // in the hierarchy, and as long as you pass in
-  // a key, it will fetch its own data correctly.
-  const textResult = (useQuery(
-    `text(${todoID}) = Text.`
-  ) as { Text: string }[])
-
-  const completedResult = (useQuery(
-    `completed(${todoID}) = Completed.`
-  ) as { Completed: boolean }[]);
-
-  // Note that the results might be empty, so we have to be careful
-  // about how we access them.
-  const text = textResult.length ? textResult[0].Text : null;
-  const completed = completedResult.length ? completedResult[0].Completed
-    : false;
-
+  
   // Because the editing state is local and is guaranteed
   // not to affect other components, we can capture it
   // here using a useState hook. Be _very_ careful doing this

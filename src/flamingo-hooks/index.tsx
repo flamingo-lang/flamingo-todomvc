@@ -46,7 +46,6 @@ export const useQuery = (
       query,
       actionSubject.pipe(map(() => {
         const res = queryToAns.get(query) ?? []
-        console.log("Piping Observable to ", query, res);
         return res;
       })),
     );

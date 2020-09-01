@@ -1,7 +1,7 @@
 export const logic = `
 module todomvc
 sorts
-    todos :: 1..3
+    todos :: 1..5
     filters :: { all, active, completed }
     new_todo :: actions
         attributes
