@@ -1,2 +1,2 @@
 language = "nodejs"
-run = "yarn && yarn start"
+run = "npx http-server build -o 'http://localhost:8080/index.html'"

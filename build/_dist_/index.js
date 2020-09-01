@@ -1,0 +1,1 @@
+import e from"../web_modules/react.js";import t from"../web_modules/react-dom.js";import{App as o}from"./1App.js";import"../web_modules/todomvc-app-css/index.css.proxy.js";t.render(e.createElement(e.StrictMode,null,e.createElement(o,null)),document.getElementById("root"));

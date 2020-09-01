@@ -1,0 +1,1 @@
+import e from"../web_modules/react.js";import{Provider as o}from"./flamingo-hooks/index.js";import{Header as t}from"./2Header.js";import{MainSection as r}from"./3MainSection.js";import{logic as i}from"./0logic.js";export const App=()=>e.createElement(o,{logic:i},e.createElement("div",null,e.createElement(t,null),e.createElement(r,null)));
